@@ -1,0 +1,18 @@
+﻿Id,title,author,price,genre,language,releasedDate,pageCount
+1,Harry Poter and Philosopher's Stone,JK Rowling,8,Fantasy,English,7/8/97,250
+2,Harry Potter and Chamber of Secrets,JK Rowling,10,Fantasy,English,7/21/98,275
+3,Harry Potter and Prisoner of Akzhaban,JK Rowling,12,Fantasy,English,6/22/00,350
+4,Harry Potter and Goblet of Fire,JK Rowling,15,Fantasy,English,7/18/02,500
+5,Harry Potter and Order of Pheonix ,JK Rowling,18,Fantasy,English,8/6/05,650
+6,Harry Potter and Half Blood Prince,JK Rowling,22,Fantasy,English,6/19/07,800
+7,Harry Potter and the Deathly Hallows,JK Rowling,25,Fantasy,English,7/1/09,1200
+8,Twilight ,Stephenie Meyer,12,Romance,English,9/15/05,250
+9,New Moon,Stephenie Meyer,14,Romance,English,7/12/06,275
+10,Eclipse,Stephenie Meyer,15,Romance,English,5/18/08,300
+11,Breaking Dawn,Stephenie Meyer,18,Romance,English,5/25/15,320
+12,Midnight Sun,Stephenie Meyer,18,Romance,English,1/1/20,285
+13,Angles and Demons,Dan Brown,9,Thriller,English,2/13/00,380
+14,The Da Vinci Code,Dan Brown,10,Thriller,English,4/12/04,400
+15,The Lost Symbol,Dan Brown,15,Thriller,English,8/18/09,600
+16,Inferno,Dan Brown,15,Thriller,English,12/12/13,650
+17,Origin,Dan Brown,17,Thriller,English,10/12/17,540
