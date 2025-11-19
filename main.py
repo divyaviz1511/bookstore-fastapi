@@ -1,8 +1,11 @@
-from fastapi import FastAPI, status
-from pydantic import BaseModel
+from typing import List
+from fastapi import FastAPI, status, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from schemas.PredictPriceSchema import BookFeatures, PricePredictionResponse
+from schemas.PredictBookTrendSchema import BookForTrend
+from schemas.search import SearchQuery
+import loadModels
 
-import joblib
 import numpy as np
 
 app = FastAPI()
@@ -16,36 +19,32 @@ app.add_middleware(
     allow_headers= ["*"]
 )
 
-#Load the trained model
-model = joblib.load("book_price_predictor_model.pkl")
-
-# Author popularity mapping
-author_score_map = {
-    "JK Rowling": 10,
-    "Dan Brown": 8,
-    "Stephenie Meyer": 7
-}
-
-#Request model
-class BookFeatures(BaseModel):
-    pageCount : int
-    releasedYear : int
-    author : str
-
-#Response model
-class PricePredictionResponse(BaseModel):
-    suggested_price: float
-
 #End point
 @app.post("/predict_price", response_model=PricePredictionResponse, status_code=status.HTTP_200_OK)
-def predict_price(features: BookFeatures):
-    author_score = author_score_map.get(features.author, 5)
-    
-    input = [
-        features.pageCount,
-        features.releasedYear,
-        author_score
-    ]
-    
-    predicted_price = model.predict([input])[0]
-    return PricePredictionResponse(suggested_price=round(predicted_price, 2))
+def predict_price_endpoint(features: BookFeatures): 
+    try:  
+        predicted_price = loadModels.predict_price(features)
+        return PricePredictionResponse(suggested_price=round(predicted_price, 2))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Prediction failed: {str(e)}")
+
+
+#End point
+@app.post("/predict_best_seller", response_model=List[float], status_code=status.HTTP_200_OK)
+def predict_book_best_seller(books: List[BookForTrend]): 
+    try:  
+        return loadModels.predict_book_best_seller(books)
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Prediction failed: {str(e)}")
+
+#End Point
+@app.post("/semantic_search_books", response_model=List[BookForTrend], status_code=status.HTTP_200_OK)
+def semantic_search(queryRequest: SearchQuery):
+    try:
+        return loadModels.semantic_search_books(queryRequest)
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Semantic search results failed: {str(e)}")
