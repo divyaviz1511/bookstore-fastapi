@@ -4,9 +4,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from schemas.PredictPriceSchema import BookFeatures, PricePredictionResponse
 from schemas.PredictBookTrendSchema import BookForTrend
 from schemas.search import SearchQuery
+from messaging.book_event_consumer import book_event_start_consumer
 import loadModels
-
-import numpy as np
+import asyncio
 
 app = FastAPI()
 
@@ -48,3 +48,11 @@ def semantic_search(queryRequest: SearchQuery):
         import traceback
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"Semantic search results failed: {str(e)}")
+
+
+#Start up RabbitMQ
+@app.on_event("startup")
+async def startup_event():
+    asyncio.create_task(book_event_start_consumer())
+
+    

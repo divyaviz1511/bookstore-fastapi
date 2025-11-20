@@ -95,5 +95,10 @@ def _initialize_cache():
         
         book_texts = [f"{b['title']} {b['author']} {b['genre']} {b['language']}" for b in _cached["books"]]
         _cached["embeddings"] = embedding_model.encode(book_texts, convert_to_numpy=True)
+
+def refresh_cache():
+    _cached["books"]= None
+    _cache["embeddings"] = None
+
     
     
